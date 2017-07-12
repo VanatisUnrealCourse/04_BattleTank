@@ -4,6 +4,9 @@
 #include "Components/StaticMeshComponent.h"
 #include "TankBarrel.generated.h"
 
+/**
+* TankBarrel is used to move the barrel to the wanted aim elevation.
+*/
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class BATTLETANK_API UTankBarrel : public UStaticMeshComponent
 {
