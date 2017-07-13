@@ -15,7 +15,8 @@ enum class EFiringState : uint8
 {
 	Reloading,
 	Aiming,
-	Locked
+	Locked,
+	OutOfAmmo,
 };
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -27,10 +28,15 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Setup")
 	void Initialise(UTankTurret* turret, UTankBarrel* barrel);
 
-	UFUNCTION(BlueprintCallable, Category = "Fire")
+	UFUNCTION(BlueprintCallable, Category = "Firing")
 	void Fire();
 
 	void AimAt(FVector aimLocation);
+
+	EFiringState GetFiringState() const;
+
+	UFUNCTION(BlueprintCallable, Category = "Firing")
+	int GetAmmoRemaining() const;
 
 private:
 	UTankAimingComponent();
@@ -59,4 +65,5 @@ private:
 	float ReloadTime = 2.0f;
 
 	FVector AimDirection;
+	int AmmoRemaining = 3;
 };

@@ -14,8 +14,8 @@ private:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 
-private:
+protected:
 	// How close can the AITank get to the target before stopping
-	UPROPERTY(EditDefaultsOnly, Category = "Setup")
-	float AcceptanceRadius = 1000;
+	UPROPERTY(EditAnywhere, Category = "Setup")
+	float AcceptanceRadius = 800;
 };
