@@ -15,7 +15,7 @@ class BATTLETANK_API UTankTrack : public UStaticMeshComponent
 	
 public:
 	// Sets a throttle between -1.0f and 1.0f
-	UFUNCTION(BlueprintCallable, Category = Input)
+	UFUNCTION(BlueprintCallable, Category = "Input")
 	void SetThrottle(float throttle);
 
 private:

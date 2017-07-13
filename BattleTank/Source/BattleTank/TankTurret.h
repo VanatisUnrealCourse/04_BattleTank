@@ -17,6 +17,6 @@ public:
 	void UTankTurret::Rotate(float relativeSpeed);
 
 private:
-	UPROPERTY(EditDefaultsOnly, Category = Setup)
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
 		float MaxDegreesPerSecond = 35.0f;
 };
