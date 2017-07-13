@@ -5,6 +5,7 @@
 #include "Components/ActorComponent.h"
 #include "TankAimingComponent.generated.h"
 
+class AProjectile;
 class UTankBarrel;
 class UTankTurret;
 
@@ -31,6 +32,9 @@ public:
 
 	void AimAt(FVector aimLocation);
 
+	UFUNCTION(BlueprintCallable, Category = "Fire")
+	void Fire();
+
 private:
 	void MoveBarrelToAimDirection(FVector aimDirection);
 
@@ -41,7 +45,14 @@ protected:
 private:
 	UTankBarrel* Barrel = nullptr;
 	UTankTurret* Turret = nullptr;
+	double LastFireTime = 0;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
 	float LaunchSpeed = 4000;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+	TSubclassOf<AProjectile> ProjectileBlueprint;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Firing")
+	float ReloadTime = 2.0f;
 };
