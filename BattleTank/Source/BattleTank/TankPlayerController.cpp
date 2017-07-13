@@ -1,7 +1,6 @@
 // Copyright VanatisUnreal
 
 #include "BattleTank.h"
-#include "Tank.h"
 #include "TankAimingComponent.h"
 #include "TankPlayerController.h"
 
@@ -9,38 +8,32 @@ void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	UTankAimingComponent* aimComp = GetControlledTank()->FindComponentByClass<UTankAimingComponent>();
-	if (!ensure(aimComp))
+	AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
+	if (!ensure(AimingComponent))
 	{
 		return;
 	}
-	FoundAimingComponent(aimComp);
+	FoundAimingComponent(AimingComponent);
 }
 
 void ATankPlayerController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 	AimTowardsCrosshair();
 }
 
-ATank* ATankPlayerController::GetControlledTank() const
-{
-	return Cast<ATank>(GetPawn());
-}
-
-
 void ATankPlayerController::AimTowardsCrosshair()
 {
-	if (!ensure(GetControlledTank()))
+	if (!ensure(AimingComponent))
 	{
 		return;
 	}
 
-	FVector hitLocation; //OUT Parameter
+	FVector hitLocation;
 	if (GetSightRayHitLocation(hitLocation))
 	{
-		GetControlledTank()->AimAt(hitLocation);
+		
+		AimingComponent->AimAt(hitLocation);
 	}
 }
 

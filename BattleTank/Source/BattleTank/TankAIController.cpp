@@ -1,7 +1,7 @@
 // Copyright VanatisUnreal
 
 #include "BattleTank.h"
-#include "Tank.h"
+#include "TankAimingComponent.h"
 #include "TankAIController.h"
 
 void ATankAIController::BeginPlay()
@@ -13,14 +13,17 @@ void ATankAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	ATank* controlledTank = Cast<ATank>(GetPawn());
-	ATank* targetTank = Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn());
+	APawn* controlledTank = GetPawn();
+	APawn* targetTank = GetWorld()->GetFirstPlayerController()->GetPawn();
 	
-	if (ensure(targetTank))
+	if (!ensure(controlledTank && targetTank))
 	{
-		MoveToActor(targetTank, AcceptanceRadius);
-
-		controlledTank->AimAt(targetTank->GetActorLocation());
-		controlledTank->Fire();
+		return;
 	}
+
+	UTankAimingComponent* aimingComponent = controlledTank->FindComponentByClass<UTankAimingComponent>();
+
+	MoveToActor(targetTank, AcceptanceRadius);
+	aimingComponent->AimAt(targetTank->GetActorLocation());
+	//controlledTank->Fire();
 }
