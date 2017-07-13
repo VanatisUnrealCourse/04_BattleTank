@@ -1,12 +1,20 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright VanatisUnreal
 
 #include "BattleTank.h"
 #include "Tank.h"
+#include "TankAimingComponent.h"
 #include "TankPlayerController.h"
 
 void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
+
+	UTankAimingComponent* aimComp = GetControlledTank()->FindComponentByClass<UTankAimingComponent>();
+	if (!ensure(aimComp))
+	{
+		return;
+	}
+	FoundAimingComponent(aimComp);
 }
 
 void ATankPlayerController::Tick(float DeltaTime)
@@ -24,7 +32,7 @@ ATank* ATankPlayerController::GetControlledTank() const
 
 void ATankPlayerController::AimTowardsCrosshair()
 {
-	if (!GetControlledTank())
+	if (!ensure(GetControlledTank()))
 	{
 		return;
 	}

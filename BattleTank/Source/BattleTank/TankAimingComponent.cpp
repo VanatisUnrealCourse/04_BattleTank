@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright VanatisUnreal
 
 #include "BattleTank.h"
 #include "TankBarrel.h"
@@ -11,32 +11,18 @@ UTankAimingComponent::UTankAimingComponent()
 	PrimaryComponentTick.bCanEverTick = false;
 }
 
-void UTankAimingComponent::SetBarrelReference(UTankBarrel* barrelToSet)
+void UTankAimingComponent::Initialise(UTankTurret* turret, UTankBarrel* barrel)
 {
-	if (!barrelToSet)
-	{
-		return;
-	}
-
-	Barrel = barrelToSet;
-}
-
-void UTankAimingComponent::SetTurretReference(UTankTurret* turretToSet)
-{
-	if (!turretToSet)
-	{
-		return;
-	}
-	Turret = turretToSet;
+	Turret = turret;
+	Barrel = barrel;
 }
 
 void UTankAimingComponent::AimAt(FVector aimLocation, float launchSpeed)
 {
-	if (!Barrel)
+	if (!ensure(Barrel))
 	{
 		return;
 	}
-
 
 	FVector outLaunchVelocity;
 	FVector startLocation = Barrel->GetSocketLocation(FName("Projectile"));
@@ -61,6 +47,11 @@ void UTankAimingComponent::AimAt(FVector aimLocation, float launchSpeed)
 
 void UTankAimingComponent::MoveBarrelToAimDirection(FVector aimDirection)
 {
+	if (!ensure(Barrel && Turret))
+	{
+		return;
+	}
+
 	FRotator aimRotator = aimDirection.Rotation();
 	FRotator barrelRotator = Barrel->GetForwardVector().Rotation();
 	FRotator deltaRotator = aimRotator - barrelRotator;

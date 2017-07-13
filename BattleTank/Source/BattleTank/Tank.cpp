@@ -1,10 +1,9 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright VanatisUnreal
 
 #include "BattleTank.h"
 #include "Projectile.h"
 #include "TankAimingComponent.h"
 #include "TankBarrel.h"
-#include "TankMovementComponent.h"
 #include "Tank.h"
 
 
@@ -13,30 +12,28 @@ ATank::ATank()
 {
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
-	TankAimingComponent = CreateDefaultSubobject<UTankAimingComponent>(FName("AimingComponent"));
+}
+
+void ATank::BeginPlay()
+{
+	Super::BeginPlay();
+	TankAimingComponent = FindComponentByClass<UTankAimingComponent>();
 }
 
 void ATank::AimAt(FVector hitLocation)
 {
+	if (!ensure(TankAimingComponent))
+	{
+		return;
+	}
 	TankAimingComponent->AimAt(hitLocation, LaunchSpeed);
-}
-
-void ATank::SetBarrelReference(UTankBarrel* barrelToSet)
-{
-	TankAimingComponent->SetBarrelReference(barrelToSet);
-	Barrel = barrelToSet;
-}
-
-void ATank::SetTurretReference(UTankTurret* turretToSet)
-{
-	TankAimingComponent->SetTurretReference(turretToSet);
 }
 
 void ATank::Fire()
 {
 	bool isReloaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTime;
 
-	if (Barrel && isReloaded)
+	if (ensure(Barrel) && ensure(isReloaded))
 	{
 		AProjectile* projectile = GetWorld()->SpawnActor<AProjectile>(
 			ProjectileBlueprint,

@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright VanatisUnreal
 
 #pragma once
 
@@ -8,6 +8,15 @@
 class UTankBarrel;
 class UTankTurret;
 
+//Enum for aiming state
+UENUM()
+enum class EFiringState : uint8
+{
+	Reloading,
+	Aiming,
+	Locked
+};
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class BATTLETANK_API UTankAimingComponent : public UActorComponent
 {
@@ -16,14 +25,18 @@ class BATTLETANK_API UTankAimingComponent : public UActorComponent
 public:	
 	// Sets default values for this component's properties
 	UTankAimingComponent();
+	
+	UFUNCTION(BlueprintCallable, Category = "Setup")
+	void Initialise(UTankTurret* turret, UTankBarrel* barrel);
 
-	void SetBarrelReference(UTankBarrel* barrelToSet);
-	void SetTurretReference(UTankTurret* turretToSet);
-
-public:	
 	void AimAt(FVector aimLocation, float launchSpeed);
 
+private:
 	void MoveBarrelToAimDirection(FVector aimDirection);
+
+protected:
+	UPROPERTY(BlueprintReadOnly, Category = "State")
+	EFiringState FiringState = EFiringState::Reloading;
 
 private:
 	UTankBarrel* Barrel = nullptr;

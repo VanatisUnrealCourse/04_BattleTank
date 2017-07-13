@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright VanatisUnreal
 
 #include "BattleTank.h"
 #include "Tank.h"
@@ -16,7 +16,7 @@ void ATankAIController::Tick(float DeltaTime)
 	ATank* controlledTank = Cast<ATank>(GetPawn());
 	ATank* targetTank = Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn());
 	
-	if (targetTank)
+	if (ensure(targetTank))
 	{
 		MoveToActor(targetTank, AcceptanceRadius);
 
