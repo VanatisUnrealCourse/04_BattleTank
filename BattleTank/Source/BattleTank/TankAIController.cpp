@@ -1,6 +1,7 @@
 // Copyright VanatisUnreal
 
 #include "BattleTank.h"
+#include "Tank.h"
 #include "TankAimingComponent.h"
 #include "TankAIController.h"
 
@@ -29,4 +30,30 @@ void ATankAIController::Tick(float DeltaTime)
 	{
 		aimingComponent->Fire();
 	}
+}
+
+void ATankAIController::SetPawn(APawn* inPawn)
+{
+	Super::SetPawn(inPawn);
+
+	if (inPawn)
+	{
+		ATank* possessedTank = Cast<ATank>(inPawn); 
+		if (!ensure(possessedTank))
+		{
+			return;
+		}
+
+		possessedTank->OnDeath.AddUniqueDynamic(this, &ATankAIController::OnPossessedTankDeath);
+	}
+}
+
+void ATankAIController::OnPossessedTankDeath()
+{
+	if (!ensure(GetPawn()))
+	{
+		return;
+	}
+
+	GetPawn()->DetachFromControllerPendingDestroy();
 }

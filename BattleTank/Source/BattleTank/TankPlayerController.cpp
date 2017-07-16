@@ -1,6 +1,7 @@
 // Copyright VanatisUnreal
 
 #include "BattleTank.h"
+#include "Tank.h"
 #include "TankAimingComponent.h"
 #include "TankPlayerController.h"
 
@@ -20,6 +21,27 @@ void ATankPlayerController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	AimTowardsCrosshair();
+}
+
+void ATankPlayerController::SetPawn(APawn* inPawn)
+{
+	Super::SetPawn(inPawn);
+
+	if (inPawn)
+	{
+		ATank* possessedTank = Cast<ATank>(inPawn);
+		if (!ensure(possessedTank))
+		{
+			return;
+		}
+
+		possessedTank->OnDeath.AddUniqueDynamic(this, &ATankPlayerController::OnPossessedTankDeath);
+	}
+}
+
+void ATankPlayerController::OnPossessedTankDeath()
+{
+	StartSpectatingOnly();
 }
 
 void ATankPlayerController::AimTowardsCrosshair()

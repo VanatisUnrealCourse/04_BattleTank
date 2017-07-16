@@ -19,7 +19,7 @@ float ATank::TakeDamage(float damageAmount, struct FDamageEvent const& damageEve
 	CurrentHealth -= damagePoints;
 	if (CurrentHealth <= 0)
 	{
-		//Tank died - do stuff
+		OnDeath.Broadcast();
 	}
 
 	return damagePoints;

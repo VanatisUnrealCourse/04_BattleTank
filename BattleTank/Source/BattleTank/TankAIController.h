@@ -13,6 +13,10 @@ class BATTLETANK_API ATankAIController : public AAIController
 private:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
+	virtual void SetPawn(APawn* inPawn) override;
+
+	UFUNCTION()
+	void OnPossessedTankDeath();
 
 protected:
 	// How close can the AITank get to the target before stopping
