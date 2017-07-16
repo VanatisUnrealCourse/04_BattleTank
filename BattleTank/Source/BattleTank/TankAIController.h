@@ -21,5 +21,5 @@ private:
 protected:
 	// How close can the AITank get to the target before stopping
 	UPROPERTY(EditAnywhere, Category = "Setup")
-	float AcceptanceRadius = 800;
+	float AcceptanceRadius = 5000;
 };
