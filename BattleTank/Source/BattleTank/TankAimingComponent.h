@@ -36,7 +36,7 @@ public:
 	EFiringState GetFiringState() const;
 
 	UFUNCTION(BlueprintCallable, Category = "Firing")
-	int GetAmmoRemaining() const;
+	int32 GetAmmoRemaining() const;
 
 private:
 	UTankAimingComponent();
@@ -54,6 +54,7 @@ private:
 	UTankBarrel* Barrel = nullptr;
 	UTankTurret* Turret = nullptr;
 	double LastFireTime = 0;
+	FVector AimDirection;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
 	float LaunchSpeed = 4000;
@@ -64,6 +65,6 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 	float ReloadTime = 2.0f;
 
-	FVector AimDirection;
-	int AmmoRemaining = 3;
+	UPROPERTY(EditDefaultsOnly, Category = "Firing")
+		int32 AmmoRemaining = 3;
 };
